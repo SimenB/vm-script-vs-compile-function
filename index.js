@@ -32,3 +32,20 @@ console.log(
   Number((process.hrtime.bigint() - start) / oneMillisecondAsNano),
   'ms',
 );
+
+start = process.hrtime.bigint();
+let cachedData;
+
+for (let i = 0; i < 100; i++) {
+  const func = compileFunction(fileSource, [], {produceCachedData: true, cachedData});
+
+  if (!cachedData) {
+    cachedData = func.cachedData
+  }
+}
+
+console.log(
+    'Running with compileFunction and cached data took',
+    Number((process.hrtime.bigint() - start) / oneMillisecondAsNano),
+    'ms',
+);
